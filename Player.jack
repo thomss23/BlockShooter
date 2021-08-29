@@ -1,0 +1,100 @@
+class Player {
+
+    field int x, y;
+    field int x1, y1;
+    field int size;
+    field Bullet bullet;
+    field boolean bulletShot;
+
+    constructor Player new(int Ax,int Ay,int Ax1,int Ay1) {
+        let x = Ax;
+        let y = Ay;
+        let x1 = Ax1;
+        let y1 = Ay1;
+        let bulletShot = false;
+        do draw();
+        return this;
+    }
+
+   method void checkBulletStatus() {
+
+      if(~(bullet = null)) {
+
+         if(bullet.hasReachedTopOrEnemy() = true) {
+            let bulletShot = false;
+            do bullet.dispose();
+         }
+
+      }
+      return;
+   }
+
+   method void shoot() {
+
+      let bulletShot = true;
+      let bullet = Bullet.new((x + x1) / 2, y);
+      do bullet.moveUpShot();
+      return;
+   }
+
+   method boolean hasShot() {
+      return bulletShot;
+   }
+
+   method void moveBullet() {
+      do bullet.moveUpShot();
+      return;
+   }
+
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x1, y1);
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x1, y1);
+        return;
+    }
+
+   /** Moves the square left by 2 pixels. */
+ method void moveLeft() {
+   if (x > 1) {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x1, y1);
+      let x = x - 2;
+      let x1 = x1 - 2;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x1, y1);
+   }
+   return;
+}
+
+/** Moves the square right by 2 pixels. */
+method void moveRight() {
+   if (x1 < 510) {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x1, y1);
+      let x = x + 2;
+      let x1 = x1 + 2;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x1, y1);
+  }
+  return;
+}
+
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   method Bullet getBullet() {
+      return bullet;
+   }
+
+
+ 
+
+}

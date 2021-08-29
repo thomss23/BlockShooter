@@ -1,0 +1,162 @@
+class Board {
+
+    field Array row1;
+    field Array row2;
+    field Array row3;
+
+    constructor Board new() {
+        do drawBoard();
+        do initEnemies();
+        return this;
+    }
+
+    method void initEnemies() {
+        let row1 = Array.new(5);
+        let row2 = Array.new(5);
+        let row3 = Array.new(5);
+
+        let row1[0] = Enemy.new(10,10,30);
+        let row1[1] = Enemy.new(110,10,30);
+        let row1[2] = Enemy.new(210,10,30);
+        let row1[3] = Enemy.new(310,10,30);
+        let row1[4] = Enemy.new(410,10,30);
+
+
+        let row2[0] = Enemy.new(10,80,30);
+        let row2[1] = Enemy.new(110,80,30);
+        let row2[2] = Enemy.new(210,80,30);
+        let row2[3] = Enemy.new(310,80,30);
+        let row2[4] = Enemy.new(410,80,30);
+
+        let row3[0] = Enemy.new(10,150,30);
+        let row3[1] = Enemy.new(110,150,30);
+        let row3[2] = Enemy.new(210,150,30);
+        let row3[3] = Enemy.new(310,150,30);
+        let row3[4] = Enemy.new(410,150,30);
+        return;
+    }
+
+
+    method boolean bulletHasTouchedAnyEnemy(Bullet bullet) {
+        var int i;
+        var Enemy tempEnemy;
+
+        let i = 0;
+        while(i < 5) {
+            let tempEnemy = row3[i];
+            if(~(tempEnemy = null)) {
+                if(hasTouched(bullet.getX1(), bullet.getY1(), row3[i])) {
+                    do tempEnemy.dispose();
+                    do bullet.erase();
+                    let row3[i] = null;
+                    return true;
+                }
+            }
+
+            let i = i + 1;
+        }
+
+        let i = 0;
+        while(i < 5) {
+            let tempEnemy = row2[i];
+            if(~(tempEnemy = null)) {
+                if(hasTouched(bullet.getX1(), bullet.getY1(), row2[i])) {
+                    do tempEnemy.dispose();
+                    do bullet.erase();
+                    let row2[i] = null;
+                    return true;
+                }
+            }
+
+
+            let i = i + 1;
+        }
+
+        
+        let i = 0;
+        while(i < 5) {
+            let tempEnemy = row1[i];
+
+            if(~(tempEnemy = null)) {
+                if(hasTouched(bullet.getX1(), bullet.getY1(), row1[i])) {
+                    do tempEnemy.dispose();
+                    do bullet.erase();
+                    let row1[i] = null;
+                    return true;
+                }
+            }
+
+
+            let i = i + 1;
+        }
+
+
+        return false;
+    }
+
+    method boolean isOver() {
+        var int i;
+        let i = 0;
+        while(i < 5) {
+            if(~(row1[i] = null)) {
+                return false;
+            }
+
+            if(~(row2[i] = null)) {
+                return false;
+            }
+
+            if(~(row3[i] = null)) {
+                return false;
+            }
+            let i = i + 1;
+        }
+        return true;
+    }
+
+
+    method boolean hasTouched(int XBullet, int YBullet, Enemy enemy) {
+        var int enemyLineX1;
+        var int enemyLineY1;
+        var int enemyLineX2;
+        var int enemyLineY2;
+
+        let enemyLineX1 = enemy.getX();
+        let enemyLineY1 = enemy.getY() + enemy.getSize();
+        
+        let enemyLineX2 = enemy.getX() + enemy.getSize();
+        let enemyLineY2 = enemy.getY() + enemy.getSize();
+
+
+        if(YBullet = enemyLineY1) {
+            if(XBullet > enemyLineX1) {
+                if(XBullet < enemyLineX2) {
+                    do enemy.erase();
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
+
+    method void drawBoard() {
+        do Screen.drawLine(0,0,511,0);
+        do Screen.drawLine(0,0,0,255);
+        do Screen.drawLine(0,255,511,255);
+        do Screen.drawLine(511,255,511,0);
+        return;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int dist2Points(int ax, int ay, int bx, int by) {
+        return Math.sqrt((ax-bx)*(ax-bx)  + (ay-by)*(ay-by));
+    }
+
+}

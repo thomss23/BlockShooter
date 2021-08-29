@@ -1,0 +1,69 @@
+class Bullet {
+    field int x, y;
+    field int x1, y1;
+    field boolean reachedTopOrEnemy;
+
+    constructor Bullet new(int Ax, int Ay) {
+        let x = Ax;
+        let y = Ay;
+        let x1 = x;
+        let y1 = y - 10;
+        let reachedTopOrEnemy = false;
+        do draw();
+        return this;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawLine(x, y, x1, y1);
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawLine(x, y, x1, y1);
+        return;
+    }
+
+    method void moveUpShot() {
+        
+            if(y1>0) {
+                do Screen.setColor(false);
+                do Screen.drawLine(x, y, x1, y1);
+                do Screen.setColor(true);
+                let y = y - 2;
+                let y1 = y1 - 2;
+                do Screen.drawLine(x, y, x1, y1);
+            } else {
+                let reachedTopOrEnemy = true;
+                do Screen.setColor(false);
+                do Screen.drawLine(x, y, x1, y1);
+            }
+        
+        return;
+
+    }
+
+    method boolean hasReachedTopOrEnemy() {
+        return reachedTopOrEnemy;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int getY1() {
+        return y1;
+    }
+
+    method int getX1() {
+        return x1;
+    }
+
+    method void setReachedTopOrEnemy(boolean isReached) {
+        let reachedTopOrEnemy = isReached;
+        return;
+    }
+
+}
